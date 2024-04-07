@@ -15,6 +15,7 @@ const App = () => {
   personService
     .getAll()
     .then((allContacts) => setPersons(allContacts))
+    .catch(() => console.log("Error"))
   }, [])
 
 
@@ -30,28 +31,51 @@ const App = () => {
     setNewFilter(event.target.value)
   }
 
-  const addNewContact = (event) => {
+
+  const addNewContact = (newContact) => {
+    personService
+    .create(newContact)
+    .then((returnedContact) => {
+      setPersons(persons.concat(returnedContact))
+      setNewName('')
+      setNewNumber('')
+    })
+    .catch((error) => console.log(error))
+  }
+
+  const editContact = (toEditContact) => {
+    personService
+    .update(toEditContact)
+    .then(returnedContact => {
+      console.log(returnedContact)
+      return setPersons(persons.map((person) => person.id !== returnedContact.id ? person : returnedContact) )
+    })
+    .catch((error) => {console.log(error)})
+  }
+
+  const addEntry = (event) => {
     event.preventDefault()
     if (!newName || !newNumber){
       alert('Name and Number cannot be empty')
       return
     }
-    if (persons.filter((person) => person.name === newName).length !== 0){
-      alert(`${newName} is already added in phonebook`)
-      return
-    }
+
     const newContact = {
       name: newName,
       number: newNumber
     }
 
-    personService
-      .create(newContact)
-      .then((returnedContact) => {
-        setPersons(persons.concat(returnedContact))
-        setNewName('')
-        setNewNumber('')
-    })
+    const contactFound = persons.find((person) => person.name === newName)
+    if (contactFound){
+      newContact.id = contactFound.id
+      editContact(newContact)
+    } else {
+      addNewContact(newContact)
+    }
+    setNewName('')
+    setNewNumber('')
+    return
+
   }
 
   const deleteContact = (name, id) => {
@@ -62,6 +86,7 @@ const App = () => {
           const filtered = persons.filter((person) => person.id !== deletedContact.id)
           setPersons(filtered)
         })
+        .catch(() => console.log("Error"))
   }
 
   return (
@@ -69,7 +94,7 @@ const App = () => {
       <h2>Phonebook</h2>
     <Filter onChange={handleNewFilter} filter={newFilter}/>
     <h3>Add a new</h3>
-    <PersonForm onSubmit={addNewContact}
+    <PersonForm onSubmit={addEntry}
             onChangeName={handleNewName}
             name={newName}
             onChangeNumber={handleNewNumber}
