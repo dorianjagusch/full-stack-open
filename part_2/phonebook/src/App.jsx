@@ -44,11 +44,16 @@ const App = () => {
   }
 
   const editContact = (toEditContact) => {
+    if (!confirm(`${toEditContact} is already in the phone book,
+        replace the old number with a new one?`)){
+          return
+        }
     personService
     .update(toEditContact)
     .then(returnedContact => {
       console.log(returnedContact)
-      return setPersons(persons.map((person) => person.id !== returnedContact.id ? person : returnedContact) )
+      return setPersons(persons.map((person) => person.id !== returnedContact.id
+        ? person : returnedContact) )
     })
     .catch((error) => {console.log(error)})
   }
