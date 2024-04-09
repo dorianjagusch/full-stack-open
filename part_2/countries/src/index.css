@@ -1,0 +1,61 @@
+body,
+h1,
+h2,
+h3,
+h4,
+p {
+	padding: 0;
+	margin:0;
+}
+
+h1{
+	margin-top: 0.3em;
+	margin-bottom: 0em
+}
+
+h2 {
+	margin-bottom: 1em
+}
+
+h4 {
+	margin-top: 1em;
+}
+
+button {
+	margin-left: 0.5em
+}
+
+ul {
+  background: hsl(0, 0%, 80%);
+  list-style-type: none;
+  padding: 0.5em;
+}
+
+li{
+	background-color: hsl(0, 0%, 96%);
+	margin: 0.3em;
+	padding: 0.5em;
+}
+
+.country-display *{
+	background: white;
+}
+
+.country-display ul {
+	list-style-type: disc;
+	margin: 0.3em;
+	margin-left: 0.5em
+}
+
+.country-display li {
+	margin: 0.2em;
+	padding: 0.3em 0em 0.2em 0.5em
+}
+
+.weather-info {
+	margin-top: 2em;
+}
+
+.weather-info img {
+	width: 25%;
+}
